@@ -46,6 +46,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
     const [showAddForm, setShowAddForm] = useState(false)
     const [newHabit, setNewHabit] = useState({ name: '', goal: '20', icon: '💪' })
     const [editingGoal, setEditingGoal] = useState<string | null>(null)
+    const [draggedHabit, setDraggedHabit] = useState<string | null>(null)
 
     const router = useRouter()
     const supabase = createClient()
@@ -147,6 +148,42 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
         setEditingGoal(null)
     }
 
+    // Drag and drop handlers
+    const handleDragStart = (habitId: string) => {
+        setDraggedHabit(habitId)
+    }
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault()
+    }
+
+    const handleDrop = async (targetHabitId: string) => {
+        if (!draggedHabit || draggedHabit === targetHabitId) {
+            setDraggedHabit(null)
+            return
+        }
+
+        const draggedIndex = habits.findIndex(h => h.id === draggedHabit)
+        const targetIndex = habits.findIndex(h => h.id === targetHabitId)
+
+        if (draggedIndex === -1 || targetIndex === -1) return
+
+        // Reorder habits array
+        const newHabits = [...habits]
+        const [removed] = newHabits.splice(draggedIndex, 1)
+        newHabits.splice(targetIndex, 0, removed)
+
+        // Update positions
+        const updatedHabits = newHabits.map((h, i) => ({ ...h, position: i }))
+        setHabits(updatedHabits)
+        setDraggedHabit(null)
+
+        // Save to database
+        for (let i = 0; i < updatedHabits.length; i++) {
+            await supabase.from('habits').update({ position: i }).eq('id', updatedHabits[i].id)
+        }
+    }
+
     return (
         <>
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4">
@@ -237,10 +274,10 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                                             <th
                                                 key={i}
                                                 className={`p-1 text-xs font-medium min-w-[32px] ${isToday
-                                                        ? 'bg-purple-600 text-white rounded'
-                                                        : weekend
-                                                            ? 'text-rose-400 bg-rose-500/10'
-                                                            : 'text-gray-400'
+                                                    ? 'bg-purple-600 text-white rounded'
+                                                    : weekend
+                                                        ? 'text-rose-400 bg-rose-500/10'
+                                                        : 'text-gray-400'
                                                     }`}
                                             >
                                                 {day}
@@ -261,10 +298,17 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                                             percentage >= 50 ? 'text-yellow-400' : 'text-red-400'
 
                                     return (
-                                        <tr key={habit.id} className="border-b border-white/5 hover:bg-white/5">
+                                        <tr
+                                            key={habit.id}
+                                            className={`border-b border-white/5 hover:bg-white/5 ${draggedHabit === habit.id ? 'opacity-50' : ''}`}
+                                            draggable
+                                            onDragStart={() => handleDragStart(habit.id)}
+                                            onDragOver={handleDragOver}
+                                            onDrop={() => handleDrop(habit.id)}
+                                        >
                                             <td className="p-2">
                                                 <div className="flex items-center gap-2">
-                                                    <span className="cursor-grab text-gray-500">⋮⋮</span>
+                                                    <span className="cursor-grab text-gray-500 hover:text-gray-300">⋮⋮</span>
                                                     <span className="text-xl">{habit.icon}</span>
                                                     <span className="text-white font-medium">{habit.name}</span>
                                                 </div>
