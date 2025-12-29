@@ -131,9 +131,34 @@ Current variables:
 
 ---
 
-## 🔄 Making Changes & Redeploying
+## 🐙 GitHub Repository
 
-### Local Development
+**Repository URL:** https://github.com/vab-m/schedule-tracker
+
+### Auto-Deploy Enabled ✅
+Vercel is connected to GitHub. Every push to `main` automatically deploys to production!
+
+---
+
+## 🔄 Making Changes & Deploying
+
+### 🚀 Recommended: Git Push (Auto-Deploy)
+
+```bash
+# 1. Navigate to project
+cd /Users/vmaheshwari/.gemini/antigravity/playground/schedule-tracker
+
+# 2. Make your changes...
+
+# 3. Stage, commit, and push
+git add -A
+git commit -m "Your change description"
+git push
+
+# ✅ Vercel automatically deploys to production!
+```
+
+### 🖥️ Local Development
 
 ```bash
 # 1. Navigate to project
@@ -149,16 +174,13 @@ npm run dev
 open http://localhost:3000
 ```
 
-### Deploy Changes
+### 🔧 Manual Deploy (if needed)
 
 ```bash
-# Option 1: Quick deploy
-vercel --prod
-
-# Option 2: Build first, then deploy
-npm run build
+# Only if auto-deploy isn't working
 vercel --prod
 ```
+
 
 ### Project Structure
 
