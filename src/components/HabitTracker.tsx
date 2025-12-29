@@ -54,6 +54,13 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
     const today = new Date()
     const isCurrentMonth = today.getFullYear() === initialYear && today.getMonth() === initialMonth
 
+    // Helper to check if a day is Saturday (6) or Sunday (0)
+    const isWeekend = (day: number) => {
+        const date = new Date(initialYear, initialMonth, day)
+        const dayOfWeek = date.getDay()
+        return dayOfWeek === 0 || dayOfWeek === 6
+    }
+
     // Add new habit
     const handleAddHabit = async (e: React.FormEvent) => {
         e.preventDefault()
@@ -222,17 +229,24 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                                 <tr>
                                     <th className="text-left p-2 text-gray-400 font-medium min-w-[180px]">Habit</th>
                                     <th className="p-2 text-gray-400 font-medium">Goal</th>
-                                    {Array.from({ length: daysInMonth }, (_, i) => (
-                                        <th
-                                            key={i}
-                                            className={`p-1 text-xs font-medium min-w-[32px] ${isCurrentMonth && today.getDate() === i + 1
-                                                ? 'bg-purple-600 text-white rounded'
-                                                : 'text-gray-400'
-                                                }`}
-                                        >
-                                            {i + 1}
-                                        </th>
-                                    ))}
+                                    {Array.from({ length: daysInMonth }, (_, i) => {
+                                        const day = i + 1
+                                        const weekend = isWeekend(day)
+                                        const isToday = isCurrentMonth && today.getDate() === day
+                                        return (
+                                            <th
+                                                key={i}
+                                                className={`p-1 text-xs font-medium min-w-[32px] ${isToday
+                                                        ? 'bg-purple-600 text-white rounded'
+                                                        : weekend
+                                                            ? 'text-rose-400 bg-rose-500/10'
+                                                            : 'text-gray-400'
+                                                    }`}
+                                            >
+                                                {day}
+                                            </th>
+                                        )
+                                    })}
                                     <th className="p-2 text-gray-400 font-medium">Total</th>
                                     <th className="p-2 text-gray-400 font-medium">%</th>
                                     <th className="p-2 text-gray-400 font-medium">Actions</th>
