@@ -281,7 +281,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                         <table className="w-full text-sm">
                             <thead className="sticky top-0 bg-slate-800 z-10">
                                 <tr>
-                                    <th className="text-left p-2 text-gray-400 font-medium min-w-[180px]">Habit</th>
+                                    <th className="text-left p-2 text-gray-400 font-medium min-w-[180px] sticky left-0 bg-slate-800 z-20">Habit</th>
                                     <th className="p-2 text-gray-400 font-medium">Goal</th>
                                     {Array.from({ length: daysInMonth }, (_, i) => {
                                         const day = i + 1
@@ -323,7 +323,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                                             onDragOver={handleDragOver}
                                             onDrop={() => handleDrop(habit.id)}
                                         >
-                                            <td className="p-2">
+                                            <td className="p-2 sticky left-0 bg-slate-900 z-10">
                                                 <div className="flex items-center gap-2">
                                                     <span className="cursor-grab text-gray-500 hover:text-gray-300">⋮⋮</span>
                                                     <span className="text-xl">{habit.icon}</span>
