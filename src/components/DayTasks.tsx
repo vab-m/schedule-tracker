@@ -122,19 +122,10 @@ export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay 
     // Filter grouped tasks: past dates show only incomplete, today/future show all
     // Also filter by selectedDay if specified
     const filteredGroupedTasks = Object.entries(groupedTasks).reduce((acc, [date, dateTasks]) => {
-        // If a specific day is selected, only show that day
+        // If a specific day is selected, show ALL tasks for that day (done and undone)
         if (selectedDay !== undefined) {
             const selectedDateStr = `${initialYear}-${String(initialMonth + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`
-            if (date !== selectedDateStr) return acc
-
-            // For selected past date, show only completed tasks
-            if (isPastDate(date)) {
-                const completedTasks = dateTasks.filter(t => t.completed)
-                if (completedTasks.length > 0) {
-                    acc[date] = completedTasks
-                }
-            } else {
-                // For today/future, show all tasks
+            if (date === selectedDateStr) {
                 acc[date] = dateTasks
             }
             return acc
