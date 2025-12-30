@@ -285,7 +285,7 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
             {/* Day Tasks Analytics - Real-time */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4">
                 <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                    <span>📊</span> Day Tasks Analytics
+                    <span>📊</span> Tasks Dashboard
                 </h2>
 
                 <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
