@@ -279,10 +279,10 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                 ) : (
                     <div className="overflow-x-auto max-h-[450px] overflow-y-auto">
                         <table className="w-full text-sm">
-                            <thead className="sticky top-0 bg-slate-800 z-10">
+                            <thead className="sticky top-0 bg-slate-800 z-30">
                                 <tr>
-                                    <th className="text-left p-2 text-gray-400 font-medium min-w-[180px] sticky left-0 bg-slate-800 z-20">Habit</th>
-                                    <th className="p-2 text-gray-400 font-medium sticky left-[180px] bg-slate-800 z-20">Days Count</th>
+                                    <th className="text-left p-2 text-gray-400 font-medium min-w-[180px] sticky left-0 bg-slate-800 z-40">Habit</th>
+                                    <th className="p-2 text-gray-400 font-medium sticky left-[180px] bg-slate-800 z-40">Days Count</th>
                                     {Array.from({ length: daysInMonth }, (_, i) => {
                                         const day = i + 1
                                         const weekend = isWeekend(day)
