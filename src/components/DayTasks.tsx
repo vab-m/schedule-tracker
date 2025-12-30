@@ -108,7 +108,9 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
         return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
     }
 
-    const todayStr = new Date().toISOString().split('T')[0]
+    // Use local timezone for date comparisons
+    const today = new Date()
+    const todayStr = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
     const isToday = (dateStr: string) => todayStr === dateStr
     const isPastDate = (dateStr: string) => dateStr < todayStr
     const isOverdue = (dateStr: string, completed: boolean) => {
