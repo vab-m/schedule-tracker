@@ -133,6 +133,9 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
         return acc
     }, {} as Record<string, DayTask[]>)
 
+    // Flatten filtered tasks to get only visible tasks for analytics
+    const visibleTasks = Object.values(filteredGroupedTasks).flat()
+
     const priorityColors = {
         high: 'border-l-red-500 bg-red-500/5',
         medium: 'border-l-yellow-500 bg-yellow-500/5',
@@ -141,20 +144,20 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
 
     const priorityEmoji = { high: '🔴', medium: '🟡', low: '🟢' }
 
-    // Analytics calculations (real-time)
-    const totalTasks = tasks.length
-    const completedTasks = tasks.filter(t => t.completed).length
+    // Analytics calculations (using visible tasks only)
+    const totalTasks = visibleTasks.length
+    const completedTasks = visibleTasks.filter(t => t.completed).length
     const pendingTasks = totalTasks - completedTasks
     const completionRate = totalTasks > 0 ? Math.round((completedTasks / totalTasks) * 100) : 0
 
     const tasksByDay = Array.from({ length: daysInMonth }, (_, day) => {
         const dayStr = `${initialYear}-${String(initialMonth + 1).padStart(2, '0')}-${String(day + 1).padStart(2, '0')}`
-        return tasks.filter(t => t.date === dayStr).length
+        return visibleTasks.filter(t => t.date === dayStr).length
     })
 
-    const highPriority = tasks.filter(t => t.priority === 'high').length
-    const mediumPriority = tasks.filter(t => t.priority === 'medium').length
-    const lowPriority = tasks.filter(t => t.priority === 'low').length
+    const highPriority = visibleTasks.filter(t => t.priority === 'high').length
+    const mediumPriority = visibleTasks.filter(t => t.priority === 'medium').length
+    const lowPriority = visibleTasks.filter(t => t.priority === 'low').length
 
     // Weekly trend data
     const weeklyData: number[] = []
@@ -164,7 +167,7 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
         let weekDone = 0
         for (let day = week * 7; day < Math.min((week + 1) * 7, daysInMonth); day++) {
             const dayStr = `${initialYear}-${String(initialMonth + 1).padStart(2, '0')}-${String(day + 1).padStart(2, '0')}`
-            const dayTasks = tasks.filter(t => t.date === dayStr)
+            const dayTasks = visibleTasks.filter(t => t.date === dayStr)
             weekTotal += dayTasks.length
             weekDone += dayTasks.filter(t => t.completed).length
         }
