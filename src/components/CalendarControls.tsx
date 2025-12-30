@@ -36,7 +36,7 @@ export function CalendarControls({ initialYear, initialMonth, initialDay }: Cale
 
     const goToToday = () => {
         const today = new Date()
-        handleChange(today.getFullYear(), today.getMonth(), undefined)
+        handleChange(today.getFullYear(), today.getMonth(), today.getDate())
     }
 
     const clearDayFilter = () => {
