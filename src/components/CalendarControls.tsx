@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface CalendarControlsProps {
@@ -16,6 +16,7 @@ const MONTHS = [
 
 export function CalendarControls({ initialYear, initialMonth, initialDay }: CalendarControlsProps) {
     const router = useRouter()
+    const [isPending, startTransition] = useTransition()
     const [year, setYear] = useState(initialYear)
     const [month, setMonth] = useState(initialMonth)
     const [day, setDay] = useState<number | undefined>(initialDay)
@@ -30,8 +31,10 @@ export function CalendarControls({ initialYear, initialMonth, initialDay }: Cale
         if (newDay !== undefined) {
             url += `&day=${newDay}`
         }
-        router.push(url)
-        router.refresh()
+        startTransition(() => {
+            router.push(url)
+            router.refresh()
+        })
     }
 
     const goToToday = () => {
@@ -53,9 +56,15 @@ export function CalendarControls({ initialYear, initialMonth, initialDay }: Cale
     const days = Array.from({ length: daysInMonth }, (_, i) => i + 1)
 
     return (
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4">
+        <div className={`bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 transition-opacity ${isPending ? 'opacity-70' : ''}`}>
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
                 <span>📅</span> Calendar Settings
+                {isPending && (
+                    <span className="ml-2 text-sm text-purple-400 flex items-center gap-2">
+                        <span className="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></span>
+                        Loading...
+                    </span>
+                )}
             </h2>
             <div className="flex flex-wrap items-end gap-4">
                 <div className="flex flex-col gap-1">
