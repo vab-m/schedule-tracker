@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import type { DayTask } from '@/types'
 import {
@@ -55,6 +55,11 @@ export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay 
 
     const supabase = createClient()
     const daysInMonth = new Date(initialYear, initialMonth + 1, 0).getDate()
+
+    // Sync tasks when props change (e.g., calendar navigation)
+    useEffect(() => {
+        setTasks(initialTasks)
+    }, [initialTasks])
 
     // Add new task
     const handleAddTask = async (e: React.FormEvent) => {

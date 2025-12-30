@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import type { HabitWithCompletions } from '@/types'
@@ -64,6 +64,11 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
     const [newHabit, setNewHabit] = useState({ name: '', goal: '20', icon: '💪' })
     const [editingGoal, setEditingGoal] = useState<string | null>(null)
     const [draggedHabit, setDraggedHabit] = useState<string | null>(null)
+
+    // Sync habits when props change (e.g., calendar navigation)
+    useEffect(() => {
+        setHabits(initialHabits)
+    }, [initialHabits])
 
     const router = useRouter()
     const supabase = createClient()
