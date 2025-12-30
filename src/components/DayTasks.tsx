@@ -90,7 +90,19 @@ export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay 
         }
 
         if (data) {
-            setTasks([...tasks, data].sort((a, b) => a.date.localeCompare(b.date)))
+            // Check if the task belongs to the current month being viewed
+            const taskDate = new Date(data.date)
+            const taskMonth = taskDate.getMonth()
+            const taskYear = taskDate.getFullYear()
+
+            if (taskYear === initialYear && taskMonth === initialMonth) {
+                // Task is in current view, add to local state
+                setTasks([...tasks, data].sort((a, b) => a.date.localeCompare(b.date)))
+            } else {
+                // Task is for a different month, show confirmation
+                alert(`Task "${data.name}" added for ${taskDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}. Navigate to that month to see it.`)
+            }
+
             setNewTask({ name: '', date: getLocalDateString(), priority: 'medium' })
             setShowAddForm(false)
         }
