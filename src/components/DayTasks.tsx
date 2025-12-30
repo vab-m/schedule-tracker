@@ -34,9 +34,10 @@ interface DayTasksProps {
     initialTasks: DayTask[]
     initialYear: number
     initialMonth: number
+    selectedDay?: number
 }
 
-export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksProps) {
+export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay }: DayTasksProps) {
     const [tasks, setTasks] = useState(initialTasks)
     const [showAddForm, setShowAddForm] = useState(false)
     const [newTask, setNewTask] = useState({
@@ -119,7 +120,27 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
     }
 
     // Filter grouped tasks: past dates show only incomplete, today/future show all
+    // Also filter by selectedDay if specified
     const filteredGroupedTasks = Object.entries(groupedTasks).reduce((acc, [date, dateTasks]) => {
+        // If a specific day is selected, only show that day
+        if (selectedDay !== undefined) {
+            const selectedDateStr = `${initialYear}-${String(initialMonth + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`
+            if (date !== selectedDateStr) return acc
+
+            // For selected past date, show only completed tasks
+            if (isPastDate(date)) {
+                const completedTasks = dateTasks.filter(t => t.completed)
+                if (completedTasks.length > 0) {
+                    acc[date] = completedTasks
+                }
+            } else {
+                // For today/future, show all tasks
+                acc[date] = dateTasks
+            }
+            return acc
+        }
+
+        // Default behavior (no day selected)
         if (isPastDate(date)) {
             // For past dates, only show incomplete tasks
             const incompleteTasks = dateTasks.filter(t => !t.completed)

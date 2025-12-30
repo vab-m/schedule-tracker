@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 interface CalendarControlsProps {
     initialYear: number
     initialMonth: number
+    initialDay?: number
 }
 
 const MONTHS = [
@@ -13,21 +14,33 @@ const MONTHS = [
     'July', 'August', 'September', 'October', 'November', 'December'
 ]
 
-export function CalendarControls({ initialYear, initialMonth }: CalendarControlsProps) {
+export function CalendarControls({ initialYear, initialMonth, initialDay }: CalendarControlsProps) {
     const router = useRouter()
     const [year, setYear] = useState(initialYear)
     const [month, setMonth] = useState(initialMonth)
+    const [day, setDay] = useState<number | undefined>(initialDay)
 
-    const handleChange = (newYear: number, newMonth: number) => {
+    const daysInMonth = new Date(year, month + 1, 0).getDate()
+
+    const handleChange = (newYear: number, newMonth: number, newDay?: number) => {
         setYear(newYear)
         setMonth(newMonth)
-        router.push(`/dashboard?year=${newYear}&month=${newMonth}`)
+        setDay(newDay)
+        let url = `/dashboard?year=${newYear}&month=${newMonth}`
+        if (newDay !== undefined) {
+            url += `&day=${newDay}`
+        }
+        router.push(url)
         router.refresh()
     }
 
     const goToToday = () => {
         const today = new Date()
-        handleChange(today.getFullYear(), today.getMonth())
+        handleChange(today.getFullYear(), today.getMonth(), undefined)
+    }
+
+    const clearDayFilter = () => {
+        handleChange(year, month, undefined)
     }
 
     // Generate year options
@@ -35,6 +48,9 @@ export function CalendarControls({ initialYear, initialMonth }: CalendarControls
     for (let y = initialYear - 5; y <= initialYear + 5; y++) {
         years.push(y)
     }
+
+    // Generate day options
+    const days = Array.from({ length: daysInMonth }, (_, i) => i + 1)
 
     return (
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4">
@@ -46,7 +62,7 @@ export function CalendarControls({ initialYear, initialMonth }: CalendarControls
                     <label className="text-xs text-gray-400 uppercase tracking-wider">Year</label>
                     <select
                         value={year}
-                        onChange={(e) => handleChange(parseInt(e.target.value), month)}
+                        onChange={(e) => handleChange(parseInt(e.target.value), month, day)}
                         className="bg-slate-800 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500"
                     >
                         {years.map(y => (
@@ -58,11 +74,24 @@ export function CalendarControls({ initialYear, initialMonth }: CalendarControls
                     <label className="text-xs text-gray-400 uppercase tracking-wider">Month</label>
                     <select
                         value={month}
-                        onChange={(e) => handleChange(year, parseInt(e.target.value))}
+                        onChange={(e) => handleChange(year, parseInt(e.target.value), day)}
                         className="bg-slate-800 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500"
                     >
                         {MONTHS.map((m, i) => (
                             <option key={i} value={i}>{m}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label className="text-xs text-gray-400 uppercase tracking-wider">Day (Optional)</label>
+                    <select
+                        value={day ?? ''}
+                        onChange={(e) => handleChange(year, month, e.target.value ? parseInt(e.target.value) : undefined)}
+                        className="bg-slate-800 border border-white/10 rounded-lg px-4 py-2 text-white focus:outline-none focus:border-purple-500"
+                    >
+                        <option value="">All Days</option>
+                        {days.map(d => (
+                            <option key={d} value={d}>{d}</option>
                         ))}
                     </select>
                 </div>
@@ -72,6 +101,14 @@ export function CalendarControls({ initialYear, initialMonth }: CalendarControls
                 >
                     <span>📍</span> Go to Today
                 </button>
+                {day !== undefined && (
+                    <button
+                        onClick={clearDayFilter}
+                        className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg flex items-center gap-2 transition-all"
+                    >
+                        <span>✕</span> Show All Days
+                    </button>
+                )}
             </div>
         </div>
     )

@@ -7,18 +7,19 @@ import { CalendarControls } from '@/components/CalendarControls'
 export const dynamic = 'force-dynamic'
 
 interface Props {
-    searchParams: Promise<{ year?: string; month?: string }>
+    searchParams: Promise<{ year?: string; month?: string; day?: string }>
 }
 
 export default async function DashboardPage({ searchParams }: Props) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Get year/month from URL params or default to current date
+    // Get year/month/day from URL params or default to current date
     const params = await searchParams
     const currentDate = new Date()
     const year = params.year ? parseInt(params.year) : currentDate.getFullYear()
     const month = params.month !== undefined ? parseInt(params.month) : currentDate.getMonth()
+    const day = params.day ? parseInt(params.day) : undefined
 
     // Fetch habits
     const { data: habits } = await supabase
@@ -58,7 +59,7 @@ export default async function DashboardPage({ searchParams }: Props) {
     return (
         <div className="space-y-6">
             {/* Calendar Controls */}
-            <CalendarControls initialYear={year} initialMonth={month} />
+            <CalendarControls initialYear={year} initialMonth={month} initialDay={day} />
 
             {/* Habit Tracker with integrated Dashboard */}
             <HabitTracker
@@ -72,8 +73,8 @@ export default async function DashboardPage({ searchParams }: Props) {
                 initialTasks={tasks || []}
                 initialYear={year}
                 initialMonth={month}
+                selectedDay={day}
             />
         </div>
     )
 }
-
