@@ -40,9 +40,16 @@ interface DayTasksProps {
 export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay }: DayTasksProps) {
     const [tasks, setTasks] = useState(initialTasks)
     const [showAddForm, setShowAddForm] = useState(false)
+
+    // Use local timezone for default date
+    const getLocalDateString = () => {
+        const today = new Date()
+        return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+    }
+
     const [newTask, setNewTask] = useState({
         name: '',
-        date: new Date().toISOString().split('T')[0],
+        date: getLocalDateString(),
         priority: 'medium' as 'low' | 'medium' | 'high',
     })
 
