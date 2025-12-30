@@ -108,11 +108,28 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
         return date.toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
     }
 
-    const isToday = (dateStr: string) => new Date().toISOString().split('T')[0] === dateStr
+    const todayStr = new Date().toISOString().split('T')[0]
+    const isToday = (dateStr: string) => todayStr === dateStr
+    const isPastDate = (dateStr: string) => dateStr < todayStr
     const isOverdue = (dateStr: string, completed: boolean) => {
         if (completed) return false
-        return new Date(dateStr) < new Date(new Date().toISOString().split('T')[0])
+        return isPastDate(dateStr)
     }
+
+    // Filter grouped tasks: past dates show only incomplete, today/future show all
+    const filteredGroupedTasks = Object.entries(groupedTasks).reduce((acc, [date, dateTasks]) => {
+        if (isPastDate(date)) {
+            // For past dates, only show incomplete tasks
+            const incompleteTasks = dateTasks.filter(t => !t.completed)
+            if (incompleteTasks.length > 0) {
+                acc[date] = incompleteTasks
+            }
+        } else {
+            // For today and future, show all tasks
+            acc[date] = dateTasks
+        }
+        return acc
+    }, {} as Record<string, DayTask[]>)
 
     const priorityColors = {
         high: 'border-l-red-500 bg-red-500/5',
@@ -228,19 +245,25 @@ export function DayTasks({ initialTasks, initialYear, initialMonth }: DayTasksPr
                         <h3 className="text-lg font-medium text-gray-300 mb-2">No day tasks yet</h3>
                         <p>Add tasks for specific days to track one-time activities!</p>
                     </div>
+                ) : Object.keys(filteredGroupedTasks).length === 0 ? (
+                    <div className="text-center py-12 text-gray-400">
+                        <div className="text-5xl mb-4">✅</div>
+                        <h3 className="text-lg font-medium text-gray-300 mb-2">All caught up!</h3>
+                        <p>No pending tasks. Add new tasks above!</p>
+                    </div>
                 ) : (
                     <div className="space-y-4">
-                        {Object.keys(groupedTasks).sort().map(date => (
+                        {Object.keys(filteredGroupedTasks).sort().map(date => (
                             <div key={date}>
                                 <div className={`flex items-center gap-2 mb-2 text-sm font-medium ${isToday(date) ? 'text-purple-400' : isOverdue(date, false) ? 'text-red-400' : 'text-gray-400'}`}>
                                     <span>📅 {formatDate(date)}</span>
                                     {isToday(date) && <span className="px-2 py-0.5 bg-purple-500 text-white text-xs rounded-full">Today</span>}
-                                    {isOverdue(date, false) && !isToday(date) && groupedTasks[date].some(t => !t.completed) && (
+                                    {isPastDate(date) && !isToday(date) && (
                                         <span className="px-2 py-0.5 bg-red-500 text-white text-xs rounded-full">Overdue</span>
                                     )}
                                 </div>
                                 <div className="space-y-2">
-                                    {groupedTasks[date].map(task => (
+                                    {filteredGroupedTasks[date].map(task => (
                                         <div key={task.id} className={`flex items-center gap-3 p-3 rounded-lg border-l-4 transition-all ${priorityColors[task.priority]} ${task.completed ? 'opacity-50' : ''}`}>
                                             <input type="checkbox" checked={task.completed} onChange={() => handleToggleTask(task.id)} className="w-5 h-5 rounded-full cursor-pointer accent-green-500" />
                                             <div className="flex-1">
