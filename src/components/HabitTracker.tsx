@@ -37,7 +37,24 @@ interface HabitTrackerProps {
     initialMonth: number
 }
 
-const ICONS = ['💪', '📚', '🧘', '✍️', '💧', '🥗', '😴', '🚶', '💻', '🎨', '📝', '🎵', '🧹', '💰', '📱', '⭐']
+const ICONS = [
+    { emoji: '💪', label: 'Fitness' },
+    { emoji: '📚', label: 'Reading' },
+    { emoji: '🧘', label: 'Meditation' },
+    { emoji: '✍️', label: 'Writing' },
+    { emoji: '💧', label: 'Hydration' },
+    { emoji: '🥗', label: 'Nutrition' },
+    { emoji: '😴', label: 'Sleep' },
+    { emoji: '🚶', label: 'Walking' },
+    { emoji: '💻', label: 'Coding' },
+    { emoji: '🎨', label: 'Art' },
+    { emoji: '📝', label: 'Journaling' },
+    { emoji: '🎵', label: 'Music' },
+    { emoji: '🧹', label: 'Cleaning' },
+    { emoji: '💰', label: 'Saving' },
+    { emoji: '📱', label: 'Screen Time' },
+    { emoji: '⭐', label: 'Goal' },
+]
 
 
 export function HabitTracker({ initialHabits, initialYear, initialMonth }: HabitTrackerProps) {
@@ -232,7 +249,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                                 className="px-3 py-2 bg-slate-800 border border-white/10 rounded-lg text-white focus:outline-none focus:border-purple-500"
                             >
                                 {ICONS.map(icon => (
-                                    <option key={icon} value={icon}>{icon}</option>
+                                    <option key={icon.emoji} value={icon.emoji}>{icon.emoji} {icon.label}</option>
                                 ))}
                             </select>
                         </div>
