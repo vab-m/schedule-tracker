@@ -86,7 +86,7 @@ export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay 
 
         if (data) {
             setTasks([...tasks, data].sort((a, b) => a.date.localeCompare(b.date)))
-            setNewTask({ name: '', date: new Date().toISOString().split('T')[0], priority: 'medium' })
+            setNewTask({ name: '', date: getLocalDateString(), priority: 'medium' })
             setShowAddForm(false)
         }
     }
