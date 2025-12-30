@@ -6,14 +6,19 @@ import { CalendarControls } from '@/components/CalendarControls'
 // Force dynamic rendering to always get fresh date
 export const dynamic = 'force-dynamic'
 
-export default async function DashboardPage() {
+interface Props {
+    searchParams: Promise<{ year?: string; month?: string }>
+}
+
+export default async function DashboardPage({ searchParams }: Props) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Fetch initial data
+    // Get year/month from URL params or default to current date
+    const params = await searchParams
     const currentDate = new Date()
-    const year = currentDate.getFullYear()
-    const month = currentDate.getMonth()
+    const year = params.year ? parseInt(params.year) : currentDate.getFullYear()
+    const month = params.month !== undefined ? parseInt(params.month) : currentDate.getMonth()
 
     // Fetch habits
     const { data: habits } = await supabase
@@ -22,14 +27,14 @@ export default async function DashboardPage() {
         .eq('user_id', user?.id)
         .order('position')
 
-    // Fetch completions for current month
+    // Fetch completions for selected month
     const { data: completions } = await supabase
         .from('habit_completions')
         .select('*')
         .eq('year', year)
         .eq('month', month)
 
-    // Fetch day tasks for current month
+    // Fetch day tasks for selected month
     const startDate = new Date(year, month, 1).toISOString().split('T')[0]
     const endDate = new Date(year, month + 1, 0).toISOString().split('T')[0]
 
