@@ -3,6 +3,9 @@ import { HabitTracker } from '@/components/HabitTracker'
 import { DayTasks } from '@/components/DayTasks'
 import { CalendarControls } from '@/components/CalendarControls'
 
+// Force dynamic rendering to always get fresh date
+export const dynamic = 'force-dynamic'
+
 export default async function DashboardPage() {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
