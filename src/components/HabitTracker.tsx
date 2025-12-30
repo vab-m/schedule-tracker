@@ -63,6 +63,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
     const [showAddForm, setShowAddForm] = useState(false)
     const [newHabit, setNewHabit] = useState({ name: '', goal: '20', icon: '💪' })
     const [editingGoal, setEditingGoal] = useState<string | null>(null)
+    const [editingHabitName, setEditingHabitName] = useState<string | null>(null)
     const [draggedHabit, setDraggedHabit] = useState<string | null>(null)
 
     // Sync habits when props change (e.g., calendar navigation)
@@ -168,6 +169,21 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
             h.id === habitId ? { ...h, goal: newGoal } : h
         ))
         setEditingGoal(null)
+    }
+
+    // Update habit name
+    const handleUpdateName = async (habitId: string, newName: string) => {
+        const trimmedName = newName.trim()
+        if (!trimmedName) {
+            setEditingHabitName(null)
+            return
+        }
+
+        await supabase.from('habits').update({ name: trimmedName }).eq('id', habitId)
+        setHabits(habits.map(h =>
+            h.id === habitId ? { ...h, name: trimmedName } : h
+        ))
+        setEditingHabitName(null)
     }
 
     // Drag and drop handlers
@@ -332,7 +348,27 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                                                 <div className="flex items-center gap-2">
                                                     <span className="cursor-grab text-gray-500 hover:text-gray-300">⋮⋮</span>
                                                     <span className="text-xl">{habit.icon}</span>
-                                                    <span className="text-white font-medium">{habit.name}</span>
+                                                    {editingHabitName === habit.id ? (
+                                                        <input
+                                                            type="text"
+                                                            defaultValue={habit.name}
+                                                            autoFocus
+                                                            onBlur={(e) => handleUpdateName(habit.id, e.target.value)}
+                                                            onKeyDown={(e) => {
+                                                                if (e.key === 'Enter') handleUpdateName(habit.id, (e.target as HTMLInputElement).value)
+                                                                if (e.key === 'Escape') setEditingHabitName(null)
+                                                            }}
+                                                            className="px-2 py-1 bg-slate-700 border border-purple-500 rounded text-white focus:outline-none min-w-[120px]"
+                                                        />
+                                                    ) : (
+                                                        <span
+                                                            onClick={() => setEditingHabitName(habit.id)}
+                                                            className="text-white font-medium cursor-pointer hover:text-purple-400 transition-colors"
+                                                            title="Click to edit"
+                                                        >
+                                                            {habit.name}
+                                                        </span>
+                                                    )}
                                                 </div>
                                             </td>
                                             <td className="p-2 text-center sticky left-[180px] bg-slate-900 z-10">
