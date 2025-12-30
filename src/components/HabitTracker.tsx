@@ -355,16 +355,23 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                                                     </span>
                                                 )}
                                             </td>
-                                            {Array.from({ length: daysInMonth }, (_, day) => (
-                                                <td key={day} className="p-1 text-center">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={habit.completions[day] || false}
-                                                        onChange={() => handleToggleCompletion(habit.id, day)}
-                                                        className="w-6 h-6 rounded cursor-pointer accent-green-500 bg-slate-700 border-white/10"
-                                                    />
-                                                </td>
-                                            ))}
+                                            {Array.from({ length: daysInMonth }, (_, day) => {
+                                                const dayNum = day + 1
+                                                const isTodayColumn = isCurrentMonth && today.getDate() === dayNum
+                                                return (
+                                                    <td
+                                                        key={day}
+                                                        className={`p-1 text-center ${isTodayColumn ? 'bg-purple-600/20' : ''}`}
+                                                    >
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={habit.completions[day] || false}
+                                                            onChange={() => handleToggleCompletion(habit.id, day)}
+                                                            className="w-6 h-6 rounded cursor-pointer accent-green-500 bg-slate-700 border-white/10"
+                                                        />
+                                                    </td>
+                                                )
+                                            })}
                                             <td className="p-2 text-center text-purple-400 font-semibold">{total}</td>
                                             <td className={`p-2 text-center font-semibold ${percentageClass}`}>{percentage}%</td>
                                             <td className="p-2 text-center">
