@@ -72,8 +72,8 @@ function HabitDemo() {
               setChecked(newChecked)
             }}
             className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center text-sm font-medium transition-all ${checked[i]
-                ? 'bg-green-500 border-green-400 text-white scale-110'
-                : 'bg-white/10 border-white/20 text-gray-400 hover:bg-white/20'
+              ? 'bg-green-500 border-green-400 text-white scale-110'
+              : 'bg-white/10 border-white/20 text-gray-400 hover:bg-white/20'
               }`}
           >
             {checked[i] ? '✓' : day}
@@ -91,39 +91,104 @@ function HabitDemo() {
   )
 }
 
-// Streak counter mini-game
-function StreakGame() {
-  const [streak, setStreak] = useState(0)
-  const [lastClick, setLastClick] = useState(0)
-  const [isActive, setIsActive] = useState(false)
+// Memory Match mini-game
+function MemoryGame() {
+  const icons = ['💪', '📚', '🧘', '💧', '🥗', '😴', '🚶', '🎨']
+  const [cards, setCards] = useState<{ icon: string; flipped: boolean; matched: boolean }[]>([])
+  const [flippedIndices, setFlippedIndices] = useState<number[]>([])
+  const [moves, setMoves] = useState(0)
+  const [gameComplete, setGameComplete] = useState(false)
 
-  const handleClick = () => {
-    const now = Date.now()
-    if (now - lastClick < 1000) {
-      setStreak(s => s + 1)
-    } else {
-      setStreak(1)
+  // Initialize game
+  useEffect(() => {
+    const shuffled = [...icons, ...icons]
+      .sort(() => Math.random() - 0.5)
+      .map(icon => ({ icon, flipped: false, matched: false }))
+    setCards(shuffled)
+  }, [])
+
+  const handleCardClick = (index: number) => {
+    if (cards[index].flipped || cards[index].matched || flippedIndices.length >= 2) return
+
+    const newCards = [...cards]
+    newCards[index].flipped = true
+    setCards(newCards)
+
+    const newFlipped = [...flippedIndices, index]
+    setFlippedIndices(newFlipped)
+
+    if (newFlipped.length === 2) {
+      setMoves(m => m + 1)
+      const [first, second] = newFlipped
+      if (cards[first].icon === cards[second].icon) {
+        // Match found!
+        setTimeout(() => {
+          const matched = [...cards]
+          matched[first].matched = true
+          matched[second].matched = true
+          setCards(matched)
+          setFlippedIndices([])
+          if (matched.every(c => c.matched)) {
+            setGameComplete(true)
+          }
+        }, 500)
+      } else {
+        // No match
+        setTimeout(() => {
+          const reset = [...cards]
+          reset[first].flipped = false
+          reset[second].flipped = false
+          setCards(reset)
+          setFlippedIndices([])
+        }, 1000)
+      }
     }
-    setLastClick(now)
-    setIsActive(true)
-    setTimeout(() => setIsActive(false), 100)
+  }
+
+  const resetGame = () => {
+    const shuffled = [...icons, ...icons]
+      .sort(() => Math.random() - 0.5)
+      .map(icon => ({ icon, flipped: false, matched: false }))
+    setCards(shuffled)
+    setFlippedIndices([])
+    setMoves(0)
+    setGameComplete(false)
   }
 
   return (
     <div className="text-center">
-      <p className="text-gray-400 text-sm mb-2">Quick! Tap as fast as you can:</p>
-      <button
-        onClick={handleClick}
-        className={`w-20 h-20 rounded-full bg-gradient-to-r from-yellow-500 to-orange-500 flex items-center justify-center text-3xl shadow-lg transition-all ${isActive ? 'scale-90' : 'scale-100 hover:scale-105'
-          }`}
-      >
-        🔥
-      </button>
-      <div className="mt-2">
-        <span className="text-2xl font-bold text-white">{streak}</span>
-        <span className="text-gray-400 text-sm ml-1">streak!</span>
+      <p className="text-gray-400 text-sm mb-4">Find all matching habit pairs!</p>
+      <div className="grid grid-cols-4 gap-2 max-w-xs mx-auto mb-4">
+        {cards.map((card, i) => (
+          <button
+            key={i}
+            onClick={() => handleCardClick(i)}
+            disabled={card.matched}
+            className={`w-14 h-14 rounded-lg text-2xl flex items-center justify-center transition-all duration-300 ${card.matched
+              ? 'bg-green-500/30 border-2 border-green-500'
+              : card.flipped
+                ? 'bg-purple-600 border-2 border-purple-400 scale-105'
+                : 'bg-white/10 border-2 border-white/20 hover:bg-white/20'
+              }`}
+          >
+            {card.flipped || card.matched ? card.icon : '❓'}
+          </button>
+        ))}
       </div>
-      {streak >= 10 && <p className="text-yellow-400 text-sm animate-pulse">🌟 Amazing! You&apos;re on fire!</p>}
+      <div className="flex justify-center gap-4 items-center">
+        <span className="text-gray-400">Moves: <strong className="text-white">{moves}</strong></span>
+        <button
+          onClick={resetGame}
+          className="px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg transition-all"
+        >
+          🔄 Reset
+        </button>
+      </div>
+      {gameComplete && (
+        <div className="mt-4 p-4 bg-gradient-to-r from-green-500/20 to-emerald-500/20 border border-green-500/30 rounded-lg animate-pulse">
+          <p className="text-green-400 font-semibold">🎉 Congratulations! You won in {moves} moves!</p>
+        </div>
+      )}
     </div>
   )
 }
@@ -276,9 +341,9 @@ export default function HomePage() {
       <div className="max-w-4xl mx-auto px-4 py-16">
         <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-8">
           <h2 className="text-2xl font-bold text-center text-white mb-6">
-            🎮 Streak Challenge
+            🎮 Habit Memory Match
           </h2>
-          <StreakGame />
+          <MemoryGame />
         </div>
       </div>
 
