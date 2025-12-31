@@ -322,7 +322,7 @@ export default function HomePage() {
       <div className="max-w-6xl mx-auto px-4 py-20 relative">
         <div className="text-center">
           {/* Animated logo */}
-          <div className="relative inline-block mb-6">
+          <div className="relative inline-block mb-6 cursor-default select-none">
             <div className="text-7xl animate-bounce">⚡</div>
             <div className="absolute inset-0 text-7xl blur-xl opacity-50 animate-pulse">⚡</div>
           </div>
