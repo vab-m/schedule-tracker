@@ -2,6 +2,7 @@ import { createClient } from '@/lib/supabase/server'
 import { HabitTracker } from '@/components/HabitTracker'
 import { DayTasks } from '@/components/DayTasks'
 import { CalendarControls } from '@/components/CalendarControls'
+import { DateRedirect } from '@/components/DateRedirect'
 
 // Force dynamic rendering to always get fresh date
 export const dynamic = 'force-dynamic'
@@ -58,6 +59,9 @@ export default async function DashboardPage({ searchParams }: Props) {
 
     return (
         <div className="space-y-6">
+            {/* Client-side date redirect for timezone handling */}
+            <DateRedirect />
+
             {/* Calendar Controls */}
             <CalendarControls initialYear={year} initialMonth={month} initialDay={day} />
 
