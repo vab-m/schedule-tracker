@@ -320,30 +320,31 @@ export default function HomePage() {
       {/* Stats Section */}
       <div className="max-w-4xl mx-auto px-4 py-12">
         <div className="grid grid-cols-3 gap-8">
-          <AnimatedCounter target={1000} label="Active Users" />
-          <AnimatedCounter target={50000} label="Habits Tracked" />
+          <AnimatedCounter target={100} label="Active Users" />
+          <AnimatedCounter target={500} label="Habits Tracked" />
           <AnimatedCounter target={99} label="Uptime %" />
         </div>
       </div>
 
-      {/* Interactive Demo Section */}
+      {/* Interactive Games Section - Side by Side */}
       <div id="demo" className="max-w-6xl mx-auto px-4 py-20">
         <h2 className="text-3xl font-bold text-center text-white mb-4">
           Try it yourself! 🎯
         </h2>
         <p className="text-gray-400 text-center mb-8">
-          Click on the days to mark your habits complete
+          Interactive demos to explore
         </p>
-        <HabitDemo />
-      </div>
-
-      {/* Mini Game Section */}
-      <div className="max-w-4xl mx-auto px-4 py-16">
-        <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-8">
-          <h2 className="text-2xl font-bold text-center text-white mb-6">
-            🎮 Habit Memory Match
-          </h2>
-          <MemoryGame />
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Habit Demo - Left */}
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-center text-white mb-4">📅 Weekly Habit Tracker</h3>
+            <HabitDemo />
+          </div>
+          {/* Memory Game - Right */}
+          <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6">
+            <h3 className="text-xl font-bold text-center text-white mb-4">🎮 Habit Memory Match</h3>
+            <MemoryGame />
+          </div>
         </div>
       </div>
 
