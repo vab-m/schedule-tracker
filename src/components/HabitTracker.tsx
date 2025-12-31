@@ -252,7 +252,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                             />
                         </div>
                         <div>
-                            <label className="block text-xs text-gray-400 uppercase mb-1">Goal</label>
+                            <label className="block text-xs text-gray-400 uppercase mb-1">Days Count</label>
                             <input
                                 type="number"
                                 min={1}
