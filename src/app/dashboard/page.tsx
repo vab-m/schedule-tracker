@@ -2,7 +2,6 @@ import { createClient } from '@/lib/supabase/server'
 import { HabitTracker } from '@/components/HabitTracker'
 import { DayTasks } from '@/components/DayTasks'
 import { CalendarControls } from '@/components/CalendarControls'
-import { DateRedirect } from '@/components/DateRedirect'
 
 // Force dynamic rendering to always get fresh date
 export const dynamic = 'force-dynamic'
@@ -15,11 +14,16 @@ export default async function DashboardPage({ searchParams }: Props) {
     const supabase = await createClient()
     const { data: { user } } = await supabase.auth.getUser()
 
-    // Get year/month/day from URL params or default to current date
+    // Get year/month/day from URL params or default to current date in IST
     const params = await searchParams
-    const currentDate = new Date()
-    const year = params.year ? parseInt(params.year) : currentDate.getFullYear()
-    const month = params.month !== undefined ? parseInt(params.month) : currentDate.getMonth()
+
+    // Use IST timezone (UTC+5:30) for server-side date calculation
+    const now = new Date()
+    const istOffset = 5.5 * 60 * 60 * 1000 // 5:30 hours in milliseconds
+    const istDate = new Date(now.getTime() + istOffset + now.getTimezoneOffset() * 60 * 1000)
+
+    const year = params.year ? parseInt(params.year) : istDate.getFullYear()
+    const month = params.month !== undefined ? parseInt(params.month) : istDate.getMonth()
     const day = params.day ? parseInt(params.day) : undefined
 
     // Fetch habits
@@ -59,9 +63,6 @@ export default async function DashboardPage({ searchParams }: Props) {
 
     return (
         <div className="space-y-6">
-            {/* Client-side date redirect for timezone handling */}
-            <DateRedirect />
-
             {/* Calendar Controls */}
             <CalendarControls initialYear={year} initialMonth={month} initialDay={day} />
 
