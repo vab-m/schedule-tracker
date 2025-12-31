@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useTransition } from 'react'
+import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 interface CalendarControlsProps {
@@ -20,6 +20,13 @@ export function CalendarControls({ initialYear, initialMonth, initialDay }: Cale
     const [year, setYear] = useState(initialYear)
     const [month, setMonth] = useState(initialMonth)
     const [day, setDay] = useState<number | undefined>(initialDay)
+
+    // Sync with props when they change (e.g., new month starts)
+    useEffect(() => {
+        setYear(initialYear)
+        setMonth(initialMonth)
+        setDay(initialDay)
+    }, [initialYear, initialMonth, initialDay])
 
     const daysInMonth = new Date(year, month + 1, 0).getDate()
 
