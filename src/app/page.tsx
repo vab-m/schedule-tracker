@@ -5,22 +5,63 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-// Floating particle component
-function FloatingParticles() {
+// Dynamic animated background with gradient mesh
+function AnimatedBackground() {
+  const [scrollY, setScrollY] = useState(0)
+
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      {[...Array(20)].map((_, i) => (
+      {/* Gradient mesh background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/40 via-slate-900 to-slate-950" />
+
+      {/* Large animated gradient blobs with parallax */}
+      <div
+        className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-blob"
+        style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+      />
+      <div
+        className="absolute top-1/4 -right-40 w-80 h-80 bg-pink-600/25 rounded-full blur-3xl animate-blob animation-delay-2000"
+        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
+      />
+      <div
+        className="absolute top-1/2 left-1/4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl animate-blob animation-delay-4000"
+        style={{ transform: `translateY(${scrollY * 0.2}px)` }}
+      />
+      <div
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-blob animation-delay-3000"
+        style={{ transform: `translateY(${-scrollY * 0.12}px)` }}
+      />
+      <div
+        className="absolute -bottom-40 left-1/3 w-80 h-80 bg-violet-600/25 rounded-full blur-3xl animate-blob animation-delay-1000"
+        style={{ transform: `translateY(${-scrollY * 0.08}px)` }}
+      />
+
+      {/* Floating particles */}
+      {[...Array(30)].map((_, i) => (
         <div
           key={i}
-          className="absolute w-2 h-2 bg-purple-500/20 rounded-full animate-float"
+          className="absolute rounded-full animate-float"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
+            width: `${2 + Math.random() * 4}px`,
+            height: `${2 + Math.random() * 4}px`,
+            background: `rgba(${Math.random() > 0.5 ? '168, 85, 247' : '236, 72, 153'}, ${0.1 + Math.random() * 0.3})`,
             animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${10 + Math.random() * 10}s`,
+            animationDuration: `${15 + Math.random() * 20}s`,
+            transform: `translateY(${scrollY * (0.05 + Math.random() * 0.1)}px)`,
           }}
         />
       ))}
+
+      {/* Grid overlay for depth */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
     </div>
   )
 }
@@ -274,8 +315,8 @@ export default function HomePage() {
   }, [router])
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 overflow-hidden">
-      <FloatingParticles />
+    <div className="min-h-screen bg-slate-950 overflow-hidden relative">
+      <AnimatedBackground />
 
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-4 py-20 relative">
@@ -446,6 +487,27 @@ export default function HomePage() {
                 }
                 .animate-fade-in {
                     animation: fade-in 1s ease-out 0.5s both;
+                }
+                @keyframes blob {
+                    0%, 100% { transform: translate(0, 0) scale(1); }
+                    25% { transform: translate(20px, -30px) scale(1.05); }
+                    50% { transform: translate(-20px, 20px) scale(0.95); }
+                    75% { transform: translate(30px, 10px) scale(1.02); }
+                }
+                .animate-blob {
+                    animation: blob 20s ease-in-out infinite;
+                }
+                .animation-delay-1000 {
+                    animation-delay: 1s;
+                }
+                .animation-delay-2000 {
+                    animation-delay: 2s;
+                }
+                .animation-delay-3000 {
+                    animation-delay: 3s;
+                }
+                .animation-delay-4000 {
+                    animation-delay: 4s;
                 }
             `}</style>
     </div>
