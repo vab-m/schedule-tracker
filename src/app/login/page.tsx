@@ -147,9 +147,11 @@ export default function LoginPage() {
                     </div>
                 </div>
 
-                <p className="text-center text-gray-500 text-sm mt-6">
-                    Your data is securely stored and synced across devices
-                </p>
+                {/* Footer */}
+                <footer className="text-center text-gray-500 text-sm mt-8">
+                    <p>Made with ⚡ by Vaibhav • Data saved securely in the cloud</p>
+                    <p className="mt-1">© 2025 Schedule Tracker. All rights reserved.</p>
+                </footer>
             </div>
         </div>
     )

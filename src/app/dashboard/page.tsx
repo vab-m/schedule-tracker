@@ -75,6 +75,14 @@ export default async function DashboardPage({ searchParams }: Props) {
                 initialMonth={month}
                 selectedDay={day}
             />
+
+            {/* Footer */}
+            <footer className="border-t border-white/10 py-8 mt-8">
+                <div className="text-center text-gray-500 text-sm">
+                    <p>Made with ⚡ by Vaibhav • Data saved securely in the cloud</p>
+                    <p className="mt-1">© 2025 Schedule Tracker. All rights reserved.</p>
+                </div>
+            </footer>
         </div>
     )
 }
