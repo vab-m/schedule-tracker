@@ -6,8 +6,10 @@ import { useState } from 'react'
 export default function LoginPage() {
     const [loading, setLoading] = useState(false)
     const [showSignUpModal, setShowSignUpModal] = useState(false)
+    const [showForgotPassword, setShowForgotPassword] = useState(false)
     const [signUpEmail, setSignUpEmail] = useState('')
     const [signUpPassword, setSignUpPassword] = useState('')
+    const [resetEmail, setResetEmail] = useState('')
     const supabase = createClient()
 
     const handleGoogleLogin = async () => {
@@ -76,6 +78,25 @@ export default function LoginPage() {
             setShowSignUpModal(false)
             setSignUpEmail('')
             setSignUpPassword('')
+        }
+        setLoading(false)
+    }
+
+    const handleForgotPassword = async (e: React.FormEvent) => {
+        e.preventDefault()
+        if (!resetEmail) return
+
+        setLoading(true)
+        const { error } = await supabase.auth.resetPasswordForEmail(resetEmail, {
+            redirectTo: `${window.location.origin}/auth/callback?next=/reset-password`,
+        })
+
+        if (error) {
+            alert(error.message)
+        } else {
+            alert('Password reset email sent! Check your inbox.')
+            setShowForgotPassword(false)
+            setResetEmail('')
         }
         setLoading(false)
     }
@@ -151,6 +172,15 @@ export default function LoginPage() {
                         >
                             {loading ? 'Signing in...' : 'Sign In'}
                         </button>
+                        <div className="text-center mt-3">
+                            <button
+                                type="button"
+                                onClick={() => setShowForgotPassword(true)}
+                                className="text-gray-400 hover:text-purple-400 text-sm"
+                            >
+                                Forgot password?
+                            </button>
+                        </div>
                     </form>
 
                     <div className="mt-6 text-center">
@@ -233,6 +263,55 @@ export default function LoginPage() {
                                     {loading ? 'Creating account...' : 'Create Account'}
                                 </button>
                             </form>
+                        </div>
+                    </div>
+                )}
+
+                {/* Forgot Password Modal */}
+                {showForgotPassword && (
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50 p-4">
+                        <div className="bg-slate-900 border border-white/10 rounded-2xl p-8 w-full max-w-md relative">
+                            <button
+                                onClick={() => setShowForgotPassword(false)}
+                                className="absolute top-4 right-4 text-gray-400 hover:text-white text-xl"
+                            >
+                                ×
+                            </button>
+
+                            <h2 className="text-2xl font-bold text-white mb-2 text-center">Reset Password</h2>
+                            <p className="text-gray-400 text-sm text-center mb-6">
+                                Enter your email and we&apos;ll send you a link to reset your password.
+                            </p>
+
+                            <form onSubmit={handleForgotPassword} className="space-y-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">Email</label>
+                                    <input
+                                        type="email"
+                                        value={resetEmail}
+                                        onChange={(e) => setResetEmail(e.target.value)}
+                                        required
+                                        className="w-full px-4 py-3 bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+                                        placeholder="you@example.com"
+                                    />
+                                </div>
+                                <button
+                                    type="submit"
+                                    disabled={loading}
+                                    className="w-full bg-gradient-to-r from-purple-600 to-pink-600 text-white font-medium py-3 px-4 rounded-lg hover:from-purple-700 hover:to-pink-700 transition-all disabled:opacity-50"
+                                >
+                                    {loading ? 'Sending...' : 'Send Reset Link'}
+                                </button>
+                            </form>
+
+                            <div className="mt-4 text-center">
+                                <button
+                                    onClick={() => setShowForgotPassword(false)}
+                                    className="text-gray-400 hover:text-purple-400 text-sm"
+                                >
+                                    Back to Sign In
+                                </button>
+                            </div>
                         </div>
                     </div>
                 )}
