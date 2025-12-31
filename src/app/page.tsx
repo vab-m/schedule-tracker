@@ -5,63 +5,32 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-// Dynamic animated background with gradient mesh
+// Warp speed space travel background - stars fly from center outwards
 function AnimatedBackground() {
-  const [scrollY, setScrollY] = useState(0)
-
-  useEffect(() => {
-    const handleScroll = () => setScrollY(window.scrollY)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
-
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      {/* Gradient mesh background */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/40 via-slate-900 to-slate-950" />
+      {/* Deep space background */}
+      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-black" />
 
-      {/* Large animated gradient blobs with parallax */}
-      <div
-        className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-blob"
-        style={{ transform: `translateY(${scrollY * 0.1}px)` }}
-      />
-      <div
-        className="absolute top-1/4 -right-40 w-80 h-80 bg-pink-600/25 rounded-full blur-3xl animate-blob animation-delay-2000"
-        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
-      />
-      <div
-        className="absolute top-1/2 left-1/4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl animate-blob animation-delay-4000"
-        style={{ transform: `translateY(${scrollY * 0.2}px)` }}
-      />
-      <div
-        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-blob animation-delay-3000"
-        style={{ transform: `translateY(${-scrollY * 0.12}px)` }}
-      />
-      <div
-        className="absolute -bottom-40 left-1/3 w-80 h-80 bg-violet-600/25 rounded-full blur-3xl animate-blob animation-delay-1000"
-        style={{ transform: `translateY(${-scrollY * 0.08}px)` }}
-      />
+      {/* Nebula colors */}
+      <div className="absolute inset-0 opacity-40">
+        <div className="absolute top-1/4 left-1/4 w-1/2 h-1/2 bg-purple-900/30 rounded-full blur-3xl" />
+        <div className="absolute top-1/3 right-1/4 w-1/3 h-1/3 bg-pink-900/20 rounded-full blur-3xl" />
+        <div className="absolute bottom-1/4 left-1/3 w-1/3 h-1/3 bg-blue-900/20 rounded-full blur-3xl" />
+      </div>
 
-      {/* Floating particles */}
-      {[...Array(30)].map((_, i) => (
-        <div
-          key={i}
-          className="absolute rounded-full animate-float"
-          style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 100}%`,
-            width: `${2 + Math.random() * 4}px`,
-            height: `${2 + Math.random() * 4}px`,
-            background: `rgba(${Math.random() > 0.5 ? '168, 85, 247' : '236, 72, 153'}, ${0.1 + Math.random() * 0.3})`,
-            animationDelay: `${Math.random() * 5}s`,
-            animationDuration: `${15 + Math.random() * 20}s`,
-            transform: `translateY(${scrollY * (0.05 + Math.random() * 0.1)}px)`,
-          }}
-        />
-      ))}
+      {/* Warp speed star layers - fly from center outwards */}
+      <div className="absolute inset-0 warp-stars-1" />
+      <div className="absolute inset-0 warp-stars-2" />
+      <div className="absolute inset-0 warp-stars-3" />
 
-      {/* Grid overlay for depth */}
-      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
+      {/* Center glow - warp drive effect */}
+      <div className="absolute inset-0 flex items-center justify-center">
+        <div className="w-4 h-4 bg-white/20 rounded-full blur-xl animate-pulse" />
+      </div>
+
+      {/* Vignette for depth */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_40%,rgba(0,0,0,0.5)_100%)]" />
     </div>
   )
 }
@@ -508,6 +477,72 @@ export default function HomePage() {
                 }
                 .animation-delay-4000 {
                     animation-delay: 4s;
+                }
+
+                /* Warp speed starfield - creates flying through space effect */
+                @keyframes warp {
+                    0% {
+                        transform: scale(0);
+                        opacity: 0;
+                    }
+                    10% {
+                        opacity: 1;
+                    }
+                    100% {
+                        transform: scale(3);
+                        opacity: 0;
+                    }
+                }
+
+                .warp-stars-1,
+                .warp-stars-2,
+                .warp-stars-3 {
+                    background-image: 
+                        radial-gradient(2px 2px at 20% 30%, white, transparent),
+                        radial-gradient(2px 2px at 40% 70%, white, transparent),
+                        radial-gradient(1px 1px at 50% 60%, white, transparent),
+                        radial-gradient(2px 2px at 60% 20%, white, transparent),
+                        radial-gradient(1px 1px at 70% 80%, white, transparent),
+                        radial-gradient(2px 2px at 80% 40%, white, transparent),
+                        radial-gradient(1px 1px at 90% 50%, white, transparent),
+                        radial-gradient(2px 2px at 10% 85%, white, transparent),
+                        radial-gradient(1px 1px at 30% 10%, white, transparent),
+                        radial-gradient(2px 2px at 85% 15%, white, transparent),
+                        radial-gradient(1px 1px at 15% 55%, white, transparent),
+                        radial-gradient(2px 2px at 55% 45%, white, transparent),
+                        radial-gradient(1px 1px at 75% 65%, white, transparent),
+                        radial-gradient(2px 2px at 35% 90%, white, transparent),
+                        radial-gradient(1px 1px at 95% 75%, white, transparent);
+                    transform-origin: center;
+                    animation: warp 4s linear infinite;
+                }
+
+                .warp-stars-2 {
+                    background-image: 
+                        radial-gradient(1px 1px at 25% 45%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(2px 2px at 45% 25%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(1px 1px at 65% 85%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(2px 2px at 85% 55%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(1px 1px at 5% 35%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(2px 2px at 55% 5%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(1px 1px at 35% 75%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(2px 2px at 75% 35%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(1px 1px at 15% 95%, rgba(200,200,255,0.8), transparent),
+                        radial-gradient(2px 2px at 95% 25%, rgba(200,200,255,0.8), transparent);
+                    animation-delay: 1.3s;
+                }
+
+                .warp-stars-3 {
+                    background-image: 
+                        radial-gradient(1px 1px at 15% 25%, rgba(255,220,255,0.7), transparent),
+                        radial-gradient(2px 2px at 35% 55%, rgba(255,220,255,0.7), transparent),
+                        radial-gradient(1px 1px at 55% 15%, rgba(255,220,255,0.7), transparent),
+                        radial-gradient(2px 2px at 75% 45%, rgba(255,220,255,0.7), transparent),
+                        radial-gradient(1px 1px at 95% 85%, rgba(255,220,255,0.7), transparent),
+                        radial-gradient(2px 2px at 25% 65%, rgba(255,220,255,0.7), transparent),
+                        radial-gradient(1px 1px at 45% 35%, rgba(255,220,255,0.7), transparent),
+                        radial-gradient(2px 2px at 65% 95%, rgba(255,220,255,0.7), transparent);
+                    animation-delay: 2.6s;
                 }
             `}</style>
     </div>
