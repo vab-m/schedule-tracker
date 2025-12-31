@@ -5,8 +5,8 @@ import { createClient } from '@/lib/supabase/client'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-// Epic space travel background with moving starfield
-function SpaceBackground() {
+// Dynamic animated background with gradient mesh
+function AnimatedBackground() {
   const [scrollY, setScrollY] = useState(0)
 
   useEffect(() => {
@@ -15,130 +15,53 @@ function SpaceBackground() {
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
 
-  // Generate stable star positions
-  const stars = useRef(
-    [...Array(150)].map(() => ({
-      x: Math.random() * 100,
-      y: Math.random() * 100,
-      size: Math.random() * 2 + 1,
-      speed: Math.random() * 0.5 + 0.2,
-      delay: Math.random() * 3,
-      opacity: Math.random() * 0.5 + 0.3,
-    }))
-  ).current
-
-  const shootingStars = useRef(
-    [...Array(5)].map(() => ({
-      startX: Math.random() * 100,
-      startY: Math.random() * 50,
-      delay: Math.random() * 15,
-      duration: 1 + Math.random() * 2,
-    }))
-  ).current
-
   return (
     <div className="fixed inset-0 pointer-events-none overflow-hidden">
-      {/* Deep space background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-slate-950 via-slate-900 to-black" />
+      {/* Gradient mesh background */}
+      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top,_var(--tw-gradient-stops))] from-purple-900/40 via-slate-900 to-slate-950" />
 
-      {/* Distant nebulae */}
+      {/* Large animated gradient blobs with parallax */}
       <div
-        className="absolute top-0 left-0 w-full h-full opacity-30"
-        style={{
-          background: `
-                        radial-gradient(ellipse at 20% 20%, rgba(139, 92, 246, 0.15) 0%, transparent 50%),
-                        radial-gradient(ellipse at 80% 30%, rgba(236, 72, 153, 0.12) 0%, transparent 45%),
-                        radial-gradient(ellipse at 40% 80%, rgba(59, 130, 246, 0.1) 0%, transparent 40%),
-                        radial-gradient(ellipse at 70% 70%, rgba(6, 182, 212, 0.08) 0%, transparent 35%)
-                    `,
-          transform: `translateY(${scrollY * 0.05}px)`,
-        }}
+        className="absolute -top-40 -left-40 w-96 h-96 bg-purple-600/30 rounded-full blur-3xl animate-blob"
+        style={{ transform: `translateY(${scrollY * 0.1}px)` }}
+      />
+      <div
+        className="absolute top-1/4 -right-40 w-80 h-80 bg-pink-600/25 rounded-full blur-3xl animate-blob animation-delay-2000"
+        style={{ transform: `translateY(${scrollY * 0.15}px)` }}
+      />
+      <div
+        className="absolute top-1/2 left-1/4 w-72 h-72 bg-blue-600/20 rounded-full blur-3xl animate-blob animation-delay-4000"
+        style={{ transform: `translateY(${scrollY * 0.2}px)` }}
+      />
+      <div
+        className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-cyan-600/20 rounded-full blur-3xl animate-blob animation-delay-3000"
+        style={{ transform: `translateY(${-scrollY * 0.12}px)` }}
+      />
+      <div
+        className="absolute -bottom-40 left-1/3 w-80 h-80 bg-violet-600/25 rounded-full blur-3xl animate-blob animation-delay-1000"
+        style={{ transform: `translateY(${-scrollY * 0.08}px)` }}
       />
 
-      {/* Moving starfield - creates warp speed effect on scroll */}
-      {stars.map((star, i) => (
+      {/* Floating particles */}
+      {[...Array(30)].map((_, i) => (
         <div
           key={i}
-          className="absolute rounded-full bg-white animate-twinkle"
-          style={{
-            left: `${star.x}%`,
-            top: `${star.y}%`,
-            width: `${star.size}px`,
-            height: `${star.size}px`,
-            opacity: star.opacity,
-            animationDelay: `${star.delay}s`,
-            transform: `translateY(${scrollY * star.speed}px)`,
-            boxShadow: star.size > 2 ? `0 0 ${star.size * 2}px rgba(255,255,255,0.5)` : 'none',
-          }}
-        />
-      ))}
-
-      {/* Shooting stars */}
-      {shootingStars.map((star, i) => (
-        <div
-          key={`shooting-${i}`}
-          className="absolute animate-shooting-star"
-          style={{
-            left: `${star.startX}%`,
-            top: `${star.startY}%`,
-            animationDelay: `${star.delay}s`,
-            animationDuration: `${star.duration}s`,
-          }}
-        >
-          <div className="w-1 h-1 bg-white rounded-full shadow-[0_0_6px_#fff,20px_0_20px_rgba(255,255,255,0.5),40px_0_10px_rgba(255,255,255,0.3)]"
-            style={{ transform: 'rotate(-45deg)' }} />
-        </div>
-      ))}
-
-      {/* Warp tunnel effect on scroll */}
-      <div
-        className="absolute inset-0"
-        style={{
-          background: `radial-gradient(ellipse at center, transparent 0%, transparent ${Math.max(20, 60 - scrollY * 0.02)}%, rgba(139, 92, 246, ${Math.min(0.15, scrollY * 0.0001)}) 100%)`,
-        }}
-      />
-
-      {/* Distant galaxies */}
-      <div
-        className="absolute w-32 h-32 rounded-full blur-2xl animate-pulse"
-        style={{
-          top: '15%',
-          right: '10%',
-          background: 'radial-gradient(circle, rgba(167, 139, 250, 0.2) 0%, transparent 70%)',
-          transform: `translateY(${scrollY * 0.08}px) rotate(${scrollY * 0.02}deg)`,
-        }}
-      />
-      <div
-        className="absolute w-24 h-24 rounded-full blur-xl"
-        style={{
-          bottom: '25%',
-          left: '5%',
-          background: 'radial-gradient(circle, rgba(251, 146, 60, 0.15) 0%, transparent 70%)',
-          transform: `translateY(${-scrollY * 0.06}px)`,
-          animation: 'pulse 4s ease-in-out infinite',
-        }}
-      />
-
-      {/* Cosmic dust particles */}
-      {[...Array(20)].map((_, i) => (
-        <div
-          key={`dust-${i}`}
           className="absolute rounded-full animate-float"
           style={{
             left: `${Math.random() * 100}%`,
             top: `${Math.random() * 100}%`,
-            width: `${1 + Math.random() * 2}px`,
-            height: `${1 + Math.random() * 2}px`,
-            background: `rgba(${Math.random() > 0.5 ? '168, 162, 158' : '214, 211, 209'}, ${0.2 + Math.random() * 0.3})`,
-            animationDelay: `${Math.random() * 10}s`,
-            animationDuration: `${20 + Math.random() * 20}s`,
-            transform: `translateY(${scrollY * (0.1 + Math.random() * 0.2)}px)`,
+            width: `${2 + Math.random() * 4}px`,
+            height: `${2 + Math.random() * 4}px`,
+            background: `rgba(${Math.random() > 0.5 ? '168, 85, 247' : '236, 72, 153'}, ${0.1 + Math.random() * 0.3})`,
+            animationDelay: `${Math.random() * 5}s`,
+            animationDuration: `${15 + Math.random() * 20}s`,
+            transform: `translateY(${scrollY * (0.05 + Math.random() * 0.1)}px)`,
           }}
         />
       ))}
 
-      {/* Subtle vignette */}
-      <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_0%,transparent_50%,rgba(0,0,0,0.4)_100%)]" />
+      {/* Grid overlay for depth */}
+      <div className="absolute inset-0 bg-[linear-gradient(rgba(255,255,255,0.02)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.02)_1px,transparent_1px)] bg-[size:100px_100px]" />
     </div>
   )
 }
@@ -393,7 +316,7 @@ export default function HomePage() {
 
   return (
     <div className="min-h-screen bg-slate-950 overflow-hidden relative">
-      <SpaceBackground />
+      <AnimatedBackground />
 
       {/* Hero Section */}
       <div className="max-w-6xl mx-auto px-4 py-20 relative">
@@ -585,21 +508,6 @@ export default function HomePage() {
                 }
                 .animation-delay-4000 {
                     animation-delay: 4s;
-                }
-                @keyframes twinkle {
-                    0%, 100% { opacity: var(--star-opacity, 0.5); }
-                    50% { opacity: 0.2; }
-                }
-                .animate-twinkle {
-                    animation: twinkle 3s ease-in-out infinite;
-                }
-                @keyframes shooting-star {
-                    0% { transform: translateX(0) translateY(0); opacity: 1; }
-                    70% { opacity: 1; }
-                    100% { transform: translateX(300px) translateY(300px); opacity: 0; }
-                }
-                .animate-shooting-star {
-                    animation: shooting-star 2s ease-in-out infinite;
                 }
             `}</style>
     </div>
