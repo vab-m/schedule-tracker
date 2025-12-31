@@ -63,9 +63,16 @@ export default function LoginPage() {
         })
 
         if (error) {
-            alert(error.message)
+            // Provide clearer error messages
+            if (error.message.includes('invalid')) {
+                alert('Please use a valid email address. Test or disposable emails may be blocked.')
+            } else if (error.message.includes('already registered')) {
+                alert('This email is already registered. Try signing in instead.')
+            } else {
+                alert(error.message)
+            }
         } else {
-            alert('Check your email for the confirmation link!')
+            alert('Account created! Check your email for the confirmation link.')
             setShowSignUpModal(false)
             setSignUpEmail('')
             setSignUpPassword('')
