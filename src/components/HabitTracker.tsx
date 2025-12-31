@@ -252,7 +252,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                             />
                         </div>
                         <div>
-                            <label className="block text-xs text-gray-400 uppercase mb-1">Days Count</label>
+                            <label className="block text-xs text-gray-400 uppercase mb-1">Target Days</label>
                             <input
                                 type="number"
                                 min={1}
@@ -303,7 +303,7 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
                             <thead className="sticky top-0 bg-slate-800 z-30">
                                 <tr>
                                     <th className="text-left p-2 text-gray-400 font-medium min-w-[180px] sticky left-0 bg-slate-800 z-40">Habit</th>
-                                    <th className="p-2 text-gray-400 font-medium sticky left-[180px] bg-slate-800 z-40">Days Count</th>
+                                    <th className="p-2 text-gray-400 font-medium sticky left-[180px] bg-slate-800 z-40">Target Days</th>
                                     {Array.from({ length: daysInMonth }, (_, i) => {
                                         const day = i + 1
                                         const weekend = isWeekend(day)
