@@ -113,7 +113,7 @@ export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay 
                 alert(`Task "${data.name}" added for ${taskDate.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}. Navigate to that month to see it.`)
             }
 
-            setNewTask({ name: '', date: getLocalDateString(), priority: 'medium' })
+            setNewTask({ name: '', date: getDefaultDateString(), priority: 'medium' })
             setShowAddForm(false)
         }
     }
