@@ -2,8 +2,10 @@
 
 import { createClient } from '@/lib/supabase/client'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
 
 export default function LoginPage() {
+    const router = useRouter()
     const [loading, setLoading] = useState(false)
     const [showSignUpModal, setShowSignUpModal] = useState(false)
     const [showForgotPassword, setShowForgotPassword] = useState(false)
@@ -42,8 +44,12 @@ export default function LoginPage() {
 
         if (error) {
             alert(error.message)
+            setLoading(false)
+        } else {
+            // Redirect to dashboard on successful login
+            router.push('/dashboard')
+            router.refresh()
         }
-        setLoading(false)
     }
 
     const handleEmailSignUp = async (e: React.FormEvent) => {
