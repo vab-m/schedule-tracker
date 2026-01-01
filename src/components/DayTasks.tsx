@@ -41,15 +41,20 @@ export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay 
     const [tasks, setTasks] = useState(initialTasks)
     const [showAddForm, setShowAddForm] = useState(false)
 
-    // Use local timezone for default date
-    const getLocalDateString = () => {
+    // Use selected date from calendar settings, or today's date
+    const getDefaultDateString = () => {
+        if (selectedDay) {
+            // Use the selected date from Calendar Settings
+            return `${initialYear}-${String(initialMonth + 1).padStart(2, '0')}-${String(selectedDay).padStart(2, '0')}`
+        }
+        // Fall back to today's date
         const today = new Date()
         return `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
     }
 
     const [newTask, setNewTask] = useState({
         name: '',
-        date: getLocalDateString(),
+        date: getDefaultDateString(),
         priority: 'medium' as 'low' | 'medium' | 'high',
     })
 
@@ -60,6 +65,11 @@ export function DayTasks({ initialTasks, initialYear, initialMonth, selectedDay 
     useEffect(() => {
         setTasks(initialTasks)
     }, [initialTasks])
+
+    // Update default date when calendar selection changes
+    useEffect(() => {
+        setNewTask(prev => ({ ...prev, date: getDefaultDateString() }))
+    }, [selectedDay, initialYear, initialMonth])
 
     // Add new task
     const handleAddTask = async (e: React.FormEvent) => {
