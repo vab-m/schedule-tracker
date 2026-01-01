@@ -1,0 +1,13 @@
+# Sitemap
+Sitemap: https://schedule-tracker-seven.vercel.app/sitemap.xml
+
+# Allow all crawlers
+User-agent: *
+Allow: /
+
+# Disallow admin/private paths
+Disallow: /api/
+Disallow: /auth/
+
+# Crawl-delay for politeness
+Crawl-delay: 1
