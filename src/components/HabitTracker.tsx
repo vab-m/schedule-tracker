@@ -442,9 +442,10 @@ export function HabitTracker({ initialHabits, initialYear, initialMonth }: Habit
 
 // Integrated Habits Dashboard Component
 function HabitsDashboard({ habits, daysInMonth }: { habits: HabitWithCompletions[], daysInMonth: number }) {
-    const totalCompletions = habits.reduce((sum, h) => sum + h.completions.filter(Boolean).length, 0)
+    // For dashboard calculations, cap each habit's completions at its goal (max 100% per habit)
+    const totalCompletions = habits.reduce((sum, h) => sum + Math.min(h.completions.filter(Boolean).length, h.goal), 0)
     const totalGoals = habits.reduce((sum, h) => sum + h.goal, 0)
-    const overallPercentage = totalGoals > 0 ? Math.round((totalCompletions / totalGoals) * 100) : 0
+    const overallPercentage = totalGoals > 0 ? Math.min(100, Math.round((totalCompletions / totalGoals) * 100)) : 0
 
     // Calculate best streak
     let maxStreak = 0
