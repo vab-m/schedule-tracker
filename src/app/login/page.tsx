@@ -108,17 +108,17 @@ export default function LoginPage() {
     }
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4">
-            <div className="w-full max-w-md">
-                {/* Back to Home Link */}
-                <a 
-                    href="/"
-                    className="inline-flex items-center gap-2 text-gray-400 hover:text-white mb-6 text-sm transition-colors"
-                >
-                    <span>←</span>
-                    <span>Back to Home</span>
-                </a>
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 flex items-center justify-center p-4 relative">
+            {/* Back to Home Link - Absolute top-left */}
+            <a
+                href="/"
+                className="absolute top-6 left-6 inline-flex items-center gap-2 text-gray-400 hover:text-white text-sm transition-colors"
+            >
+                <span>←</span>
+                <span>Back to Home</span>
+            </a>
 
+            <div className="w-full max-w-md">
                 {/* Logo */}
                 <div className="text-center mb-8">
                     <div className="text-5xl mb-4">⚡</div>
