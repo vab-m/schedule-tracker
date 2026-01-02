@@ -95,7 +95,7 @@ function HabitDemo() {
   const checkedCount = checked.filter(Boolean).length
 
   return (
-    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-6 max-w-md mx-auto">
+    <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 sm:p-6 max-w-md mx-auto">
       <div className="flex items-center gap-3 mb-4">
         <span className="text-3xl">💪</span>
         <div>
@@ -112,7 +112,7 @@ function HabitDemo() {
               newChecked[i] = !newChecked[i]
               setChecked(newChecked)
             }}
-            className={`w-10 h-10 rounded-lg border-2 flex items-center justify-center text-sm font-medium transition-all ${checked[i]
+            className={`w-8 h-8 sm:w-10 sm:h-10 rounded-lg border-2 flex items-center justify-center text-xs sm:text-sm font-medium transition-all ${checked[i]
               ? 'bg-green-500 border-green-400 text-white scale-110'
               : 'bg-white/10 border-white/20 text-gray-400 hover:bg-white/20'
               }`}
@@ -198,14 +198,14 @@ function MemoryGame() {
 
   return (
     <div className="text-center">
-      <p className="text-gray-400 text-sm mb-4">Find all matching habit pairs!</p>
-      <div className="grid grid-cols-4 gap-2 max-w-xs mx-auto mb-4">
+      <p className="text-gray-400 text-xs sm:text-sm mb-3 sm:mb-4">Find all matching habit pairs!</p>
+      <div className="grid grid-cols-4 gap-1.5 sm:gap-2 max-w-[200px] sm:max-w-xs mx-auto mb-3 sm:mb-4">
         {cards.map((card, i) => (
           <button
             key={i}
             onClick={() => handleCardClick(i)}
             disabled={card.matched}
-            className={`w-14 h-14 rounded-lg text-2xl flex items-center justify-center transition-all duration-300 ${card.matched
+            className={`w-10 h-10 sm:w-14 sm:h-14 rounded-lg text-lg sm:text-2xl flex items-center justify-center transition-all duration-300 ${card.matched
               ? 'bg-green-500/30 border-2 border-green-500'
               : card.flipped
                 ? 'bg-purple-600 border-2 border-purple-400 scale-105'
@@ -265,7 +265,7 @@ function AnimatedCounter({ target, label }: { target: number; label: string }) {
 
   return (
     <div ref={ref} className="text-center">
-      <div className="text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
+      <div className="text-2xl sm:text-4xl font-bold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
         {count}+
       </div>
       <p className="text-gray-400 text-sm">{label}</p>
@@ -319,23 +319,23 @@ export default function HomePage() {
       <AnimatedBackground />
 
       {/* Hero Section */}
-      <div className="max-w-6xl mx-auto px-4 py-20 relative">
+      <div className="max-w-6xl mx-auto px-4 py-12 sm:py-20 relative">
         <div className="text-center">
           {/* Animated logo */}
-          <div className="relative inline-block mb-6 cursor-default select-none">
-            <div className="text-7xl animate-bounce">⚡</div>
-            <div className="absolute inset-0 text-7xl blur-xl opacity-50 animate-pulse">⚡</div>
+          <div className="relative inline-block mb-4 sm:mb-6 cursor-default select-none">
+            <div className="text-5xl sm:text-7xl animate-bounce">⚡</div>
+            <div className="absolute inset-0 text-5xl sm:text-7xl blur-xl opacity-50 animate-pulse">⚡</div>
           </div>
 
           {/* Typing animation title */}
-          <h1 className="text-5xl md:text-7xl font-bold mb-4 h-20">
+          <h1 className="text-3xl sm:text-5xl md:text-7xl font-bold mb-4 min-h-[3rem] sm:h-20">
             <span className="bg-gradient-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
               {displayedText}
             </span>
             {!isComplete && <span className="animate-blink text-purple-400">|</span>}
           </h1>
 
-          <p className="text-xl text-gray-400 mb-8 max-w-2xl mx-auto animate-fade-in">
+          <p className="text-base sm:text-xl text-gray-400 mb-6 sm:mb-8 max-w-2xl mx-auto animate-fade-in px-4">
             Ultimate Habit and Tasks Tracker. Transform your daily actions into clear, real-time insights.
           </p>
 
@@ -359,8 +359,8 @@ export default function HomePage() {
       </div>
 
       {/* Stats Section */}
-      <div className="max-w-4xl mx-auto px-4 py-12">
-        <div className="grid grid-cols-3 gap-8">
+      <div className="max-w-4xl mx-auto px-4 py-8 sm:py-12">
+        <div className="grid grid-cols-3 gap-4 sm:gap-8">
           <AnimatedCounter target={100} label="Active Users" />
           <AnimatedCounter target={500} label="Habits Tracked" />
           <AnimatedCounter target={99} label="Uptime %" />
@@ -368,8 +368,8 @@ export default function HomePage() {
       </div>
 
       {/* Interactive Games Section - Side by Side */}
-      <div id="demo" className="max-w-6xl mx-auto px-4 py-20">
-        <h2 className="text-3xl font-bold text-center text-white mb-4">
+      <div id="demo" className="max-w-6xl mx-auto px-4 py-12 sm:py-20">
+        <h2 className="text-2xl sm:text-3xl font-bold text-center text-white mb-3 sm:mb-4">
           Try it yourself! 🎯
         </h2>
         <p className="text-gray-400 text-center mb-8">
