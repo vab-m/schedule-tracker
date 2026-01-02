@@ -173,26 +173,6 @@ export default async function DashboardOverview() {
                 </div>
             </div>
 
-            {/* Date Info */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 text-center">
-                <p className="text-gray-400">
-                    Today is <span className="text-white font-medium">
-                        {istDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
-                    </span>
-                </p>
-            </div>
-
-            {/* Analytics Charts - 3x3 Grid */}
-            <div>
-                <h2 className="text-xl font-semibold text-white mb-4">📊 Analytics Dashboard</h2>
-                <DashboardCharts
-                    habitsData={habitsData}
-                    tasksData={tasksData}
-                    daysInMonth={daysInMonth}
-                    currentDay={today}
-                />
-            </div>
-
             {/* Quick Actions */}
             <div>
                 <h2 className="text-xl font-semibold text-white mb-4">Quick Actions</h2>
@@ -223,6 +203,26 @@ export default async function DashboardOverview() {
                         </div>
                     </Link>
                 </div>
+            </div>
+
+            {/* Date Info */}
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 text-center">
+                <p className="text-gray-400">
+                    Today is <span className="text-white font-medium">
+                        {istDate.toLocaleDateString('en-US', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' })}
+                    </span>
+                </p>
+            </div>
+
+            {/* Analytics Charts - 3x3 Grid */}
+            <div>
+                <h2 className="text-xl font-semibold text-white mb-4">📊 Analytics Dashboard</h2>
+                <DashboardCharts
+                    habitsData={habitsData}
+                    tasksData={tasksData}
+                    daysInMonth={daysInMonth}
+                    currentDay={today}
+                />
             </div>
         </div>
     )
