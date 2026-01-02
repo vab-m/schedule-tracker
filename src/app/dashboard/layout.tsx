@@ -35,9 +35,15 @@ export default async function DashboardLayout({
                 </div>
 
                 {/* Content with bottom padding on mobile for nav */}
-                <main className="max-w-6xl mx-auto px-4 py-4 lg:px-6 lg:py-6 pb-24 lg:pb-6">
+                <main className="max-w-6xl mx-auto px-4 py-4 lg:px-6 lg:py-6 pb-32 lg:pb-6">
                     {children}
                 </main>
+
+                {/* Mobile Footer - visible only on mobile/tablet */}
+                <footer className="lg:hidden text-center py-6 pb-20 text-gray-500 text-sm border-t border-white/10">
+                    <p>Made with ⚡ by Vaibhav</p>
+                    <p className="text-xs mt-1">© 2026 Schedule Tracker</p>
+                </footer>
             </div>
 
             {/* Mobile Bottom Navigation */}
