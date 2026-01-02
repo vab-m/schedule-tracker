@@ -23,7 +23,7 @@ export default async function TasksPage({ searchParams }: Props) {
 
     const year = params.year ? parseInt(params.year) : istDate.getFullYear()
     const month = params.month !== undefined ? parseInt(params.month) : istDate.getMonth()
-    const day = params.day ? parseInt(params.day) : istDate.getDate()
+    const day = params.day ? parseInt(params.day) : undefined
 
     // Fetch day tasks for selected month
     const startDate = new Date(year, month, 1).toISOString().split('T')[0]
