@@ -461,7 +461,7 @@ export default function HomePage() {
       <footer className="border-t border-white/10 py-8">
         <div className="max-w-6xl mx-auto px-4 text-center text-gray-500">
           <p>Made with ⚡ by Vaibhav • Data saved securely in the cloud</p>
-          <p className="text-sm mt-2">© 2025 Schedule Tracker. All rights reserved.</p>
+          <p className="text-sm mt-2">© 2026 Schedule Tracker. All rights reserved.</p>
         </div>
       </footer>
 

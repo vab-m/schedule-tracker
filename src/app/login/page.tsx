@@ -325,7 +325,7 @@ export default function LoginPage() {
                 {/* Footer */}
                 <footer className="text-center text-gray-500 text-sm mt-8">
                     <p>Made with ⚡ by Vaibhav • Data saved securely in the cloud</p>
-                    <p className="mt-1">© 2025 Schedule Tracker. All rights reserved.</p>
+                    <p className="mt-1">© 2026 Schedule Tracker. All rights reserved.</p>
                 </footer>
             </div>
         </div>
