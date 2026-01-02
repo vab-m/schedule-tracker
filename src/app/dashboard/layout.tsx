@@ -4,6 +4,7 @@ import { DashboardNav } from '@/components/DashboardNav'
 import { Sidebar } from '@/components/Sidebar'
 import { MobileBottomNav } from '@/components/MobileBottomNav'
 import { MobileHeader } from '@/components/MobileHeader'
+import { PWAInstallPrompt } from '@/components/PWAInstallPrompt'
 
 export default async function DashboardLayout({
     children,
@@ -48,6 +49,9 @@ export default async function DashboardLayout({
 
             {/* Mobile Bottom Navigation */}
             <MobileBottomNav />
+
+            {/* PWA Install Prompt */}
+            <PWAInstallPrompt />
         </div>
     )
 }
