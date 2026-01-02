@@ -66,15 +66,78 @@ export function CalendarControls({ initialYear, initialMonth, initialDay, basePa
     return (
         <div className={`bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl p-4 transition-opacity ${isPending ? 'opacity-70' : ''}`}>
             <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
-                <span>📅</span> Calendar Settings
+                <span>📅</span>
+                <span className="hidden sm:inline">Calendar Settings</span>
+                <span className="sm:hidden">Date</span>
                 {isPending && (
                     <span className="ml-2 text-sm text-purple-400 flex items-center gap-2">
                         <span className="w-4 h-4 border-2 border-purple-400 border-t-transparent rounded-full animate-spin"></span>
-                        Loading...
+                        <span className="hidden sm:inline">Loading...</span>
                     </span>
                 )}
             </h2>
-            <div className="flex flex-wrap items-end gap-4">
+
+            {/* Mobile Layout - Compact grid */}
+            <div className="grid grid-cols-3 gap-2 sm:hidden">
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] text-gray-400 uppercase">Year</label>
+                    <select
+                        value={year}
+                        onChange={(e) => handleChange(parseInt(e.target.value), month, day)}
+                        className="bg-slate-800 border border-white/10 rounded-lg px-2 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500"
+                    >
+                        {years.map(y => (
+                            <option key={y} value={y}>{y}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] text-gray-400 uppercase">Month</label>
+                    <select
+                        value={month}
+                        onChange={(e) => handleChange(year, parseInt(e.target.value), day)}
+                        className="bg-slate-800 border border-white/10 rounded-lg px-2 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500"
+                    >
+                        {MONTHS.map((m, i) => (
+                            <option key={i} value={i}>{m.slice(0, 3)}</option>
+                        ))}
+                    </select>
+                </div>
+                <div className="flex flex-col gap-1">
+                    <label className="text-[10px] text-gray-400 uppercase">Day</label>
+                    <select
+                        value={day ?? ''}
+                        onChange={(e) => handleChange(year, month, e.target.value ? parseInt(e.target.value) : undefined)}
+                        className="bg-slate-800 border border-white/10 rounded-lg px-2 py-2.5 text-white text-sm focus:outline-none focus:border-purple-500"
+                    >
+                        <option value="">All</option>
+                        {days.map(d => (
+                            <option key={d} value={d}>{d}</option>
+                        ))}
+                    </select>
+                </div>
+            </div>
+
+            {/* Mobile buttons row */}
+            <div className="flex gap-2 mt-3 sm:hidden">
+                <button
+                    onClick={goToToday}
+                    className="flex-1 px-3 py-2.5 bg-slate-700 hover:bg-slate-600 text-white text-sm rounded-lg flex items-center justify-center gap-2 transition-all"
+                >
+                    <span>📍</span> Today
+                </button>
+                {day !== undefined && (
+                    <button
+                        onClick={clearDayFilter}
+                        className="flex-1 px-3 py-2.5 bg-purple-600 hover:bg-purple-700 text-white text-sm rounded-lg flex items-center justify-center gap-2 transition-all"
+                    >
+                        <span>✕</span> All Days
+                    </button>
+                )}
+            </div>
+
+            {/* Desktop Layout - Inline */}
+            <div className="hidden sm:flex flex-wrap items-end gap-4">
                 <div className="flex flex-col gap-1">
                     <label className="text-xs text-gray-400 uppercase tracking-wider">Year</label>
                     <select

@@ -79,11 +79,11 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
     const habitSuccessRate = totalHabitGoals > 0 ? Math.min(100, Math.round((totalHabitCompletions / totalHabitGoals) * 100)) : 0
 
     return (
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
             {/* 1. Overall Progress Doughnut */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Overall Habit Progress</h3>
-                <div className="h-48 flex items-center justify-center relative">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Habit Progress</h3>
+                <div className="h-32 sm:h-48 flex items-center justify-center relative">
                     <Doughnut
                         data={{
                             labels: ['Completed', 'Remaining'],
@@ -103,9 +103,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 2. Task Status Pie */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Task Status</h3>
-                <div className="h-48">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Task Status</h3>
+                <div className="h-32 sm:h-48">
                     <Pie
                         data={{
                             labels: ['Completed', 'Pending'],
@@ -121,9 +121,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 3. Task Priority Distribution */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Task Priorities</h3>
-                <div className="h-48">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Priorities</h3>
+                <div className="h-32 sm:h-48">
                     <Doughnut
                         data={{
                             labels: ['High', 'Medium', 'Low'],
@@ -139,9 +139,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 4. Weekly Habit Progress Line */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Weekly Habit Trend</h3>
-                <div className="h-48">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Weekly Trend</h3>
+                <div className="h-32 sm:h-48">
                     <Line
                         data={{
                             labels: habitsData.weeklyProgress.map((_, i) => `Week ${i + 1}`),
@@ -160,9 +160,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 5. Weekly Tasks Completed Bar */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Weekly Task Completion</h3>
-                <div className="h-48">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Weekly Tasks</h3>
+                <div className="h-32 sm:h-48">
                     <Bar
                         data={{
                             labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
@@ -179,9 +179,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 6. Habit Completion by Habit Bar */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Habit Performance</h3>
-                <div className="h-48">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Performance</h3>
+                <div className="h-32 sm:h-48">
                     <Bar
                         data={{
                             labels: habitsData.names.slice(0, 5),
@@ -203,9 +203,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 7. Productivity Score Gauge */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Productivity Score</h3>
-                <div className="h-48 flex items-center justify-center relative">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Score</h3>
+                <div className="h-32 sm:h-48 flex items-center justify-center relative">
                     <Doughnut
                         data={{
                             labels: ['Score', 'Remaining'],
@@ -230,9 +230,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 8. Month Progress */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Month Progress</h3>
-                <div className="h-48 flex items-center justify-center relative">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Month</h3>
+                <div className="h-32 sm:h-48 flex items-center justify-center relative">
                     <Doughnut
                         data={{
                             labels: ['Days Passed', 'Days Left'],
@@ -252,9 +252,9 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             </div>
 
             {/* 9. Daily Activity Heatmap Style */}
-            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-2xl p-5">
-                <h3 className="text-sm font-medium text-gray-400 mb-3">Recent Activity</h3>
-                <div className="h-48 grid grid-cols-7 gap-1 content-center">
+            <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
+                <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Activity</h3>
+                <div className="h-32 sm:h-48 grid grid-cols-7 gap-0.5 sm:gap-1 content-center">
                     {Array.from({ length: 28 }, (_, i) => {
                         const dayIndex = currentDay - 28 + i
                         const isActive = dayIndex > 0 && dayIndex <= currentDay
@@ -263,8 +263,8 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
                             <div
                                 key={i}
                                 className={`aspect-square rounded-sm ${intensity > 0.7 ? 'bg-green-500' :
-                                        intensity > 0.4 ? 'bg-green-600/60' :
-                                            intensity > 0 ? 'bg-green-700/40' : 'bg-white/5'
+                                    intensity > 0.4 ? 'bg-green-600/60' :
+                                        intensity > 0 ? 'bg-green-700/40' : 'bg-white/5'
                                     }`}
                                 title={isActive ? `Day ${dayIndex}` : ''}
                             />
