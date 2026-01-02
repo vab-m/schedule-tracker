@@ -52,13 +52,19 @@ const chartOptions = {
     maintainAspectRatio: false,
     plugins: {
         legend: {
-            labels: { color: '#9ca3af', font: { size: 11 } },
+            labels: { color: '#9ca3af', font: { size: 10 } },
             position: 'bottom' as const,
         },
     },
     scales: {
-        x: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
-        y: { grid: { color: 'rgba(255,255,255,0.05)' }, ticks: { color: '#9ca3af' } },
+        x: {
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#9ca3af', font: { size: 9 }, maxRotation: 45, minRotation: 45 }
+        },
+        y: {
+            grid: { color: 'rgba(255,255,255,0.05)' },
+            ticks: { color: '#9ca3af', font: { size: 9 } }
+        },
     },
 }
 
@@ -67,7 +73,7 @@ const doughnutOptions = {
     maintainAspectRatio: false,
     plugins: {
         legend: {
-            labels: { color: '#9ca3af', font: { size: 11 } },
+            labels: { color: '#9ca3af', font: { size: 10 }, boxWidth: 12, padding: 8 },
             position: 'bottom' as const,
         },
     },
@@ -79,11 +85,11 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
     const habitSuccessRate = totalHabitGoals > 0 ? Math.min(100, Math.round((totalHabitCompletions / totalHabitGoals) * 100)) : 0
 
     return (
-        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {/* 1. Overall Progress Doughnut */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Habit Progress</h3>
-                <div className="h-32 sm:h-48 flex items-center justify-center relative">
+                <div className="h-40 sm:h-48 flex items-center justify-center relative">
                     <Doughnut
                         data={{
                             labels: ['Completed', 'Remaining'],
@@ -105,7 +111,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 2. Task Status Pie */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Task Status</h3>
-                <div className="h-32 sm:h-48">
+                <div className="h-40 sm:h-48">
                     <Pie
                         data={{
                             labels: ['Completed', 'Pending'],
@@ -123,7 +129,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 3. Task Priority Distribution */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Priorities</h3>
-                <div className="h-32 sm:h-48">
+                <div className="h-40 sm:h-48">
                     <Doughnut
                         data={{
                             labels: ['High', 'Medium', 'Low'],
@@ -141,7 +147,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 4. Weekly Habit Progress Line */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Weekly Trend</h3>
-                <div className="h-32 sm:h-48">
+                <div className="h-40 sm:h-48">
                     <Line
                         data={{
                             labels: habitsData.weeklyProgress.map((_, i) => `Week ${i + 1}`),
@@ -162,7 +168,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 5. Weekly Tasks Completed Bar */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Weekly Tasks</h3>
-                <div className="h-32 sm:h-48">
+                <div className="h-40 sm:h-48">
                     <Bar
                         data={{
                             labels: ['Week 1', 'Week 2', 'Week 3', 'Week 4'],
@@ -181,7 +187,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 6. Habit Completion by Habit Bar */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Performance</h3>
-                <div className="h-32 sm:h-48">
+                <div className="h-40 sm:h-48">
                     <Bar
                         data={{
                             labels: habitsData.names.slice(0, 5),
@@ -205,7 +211,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 7. Productivity Score Gauge */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Score</h3>
-                <div className="h-32 sm:h-48 flex items-center justify-center relative">
+                <div className="h-40 sm:h-48 flex items-center justify-center relative">
                     <Doughnut
                         data={{
                             labels: ['Score', 'Remaining'],
@@ -232,7 +238,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 8. Month Progress */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Month</h3>
-                <div className="h-32 sm:h-48 flex items-center justify-center relative">
+                <div className="h-40 sm:h-48 flex items-center justify-center relative">
                     <Doughnut
                         data={{
                             labels: ['Days Passed', 'Days Left'],
@@ -254,7 +260,7 @@ export function DashboardCharts({ habitsData, tasksData, daysInMonth, currentDay
             {/* 9. Daily Activity Heatmap Style */}
             <div className="bg-white/5 backdrop-blur-xl border border-white/10 rounded-xl sm:rounded-2xl p-3 sm:p-5">
                 <h3 className="text-xs sm:text-sm font-medium text-gray-400 mb-2 sm:mb-3">Activity</h3>
-                <div className="h-32 sm:h-48 grid grid-cols-7 gap-0.5 sm:gap-1 content-center">
+                <div className="h-40 sm:h-48 grid grid-cols-7 gap-0.5 sm:gap-1 content-center">
                     {Array.from({ length: 28 }, (_, i) => {
                         const dayIndex = currentDay - 28 + i
                         const isActive = dayIndex > 0 && dayIndex <= currentDay
