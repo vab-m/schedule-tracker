@@ -7,6 +7,7 @@ interface CalendarControlsProps {
     initialYear: number
     initialMonth: number
     initialDay?: number
+    basePath?: string
 }
 
 const MONTHS = [
@@ -14,7 +15,7 @@ const MONTHS = [
     'July', 'August', 'September', 'October', 'November', 'December'
 ]
 
-export function CalendarControls({ initialYear, initialMonth, initialDay }: CalendarControlsProps) {
+export function CalendarControls({ initialYear, initialMonth, initialDay, basePath = '/dashboard' }: CalendarControlsProps) {
     const router = useRouter()
     const [isPending, startTransition] = useTransition()
     const [year, setYear] = useState(initialYear)
@@ -34,7 +35,7 @@ export function CalendarControls({ initialYear, initialMonth, initialDay }: Cale
         setYear(newYear)
         setMonth(newMonth)
         setDay(newDay)
-        let url = `/dashboard?year=${newYear}&month=${newMonth}`
+        let url = `${basePath}?year=${newYear}&month=${newMonth}`
         if (newDay !== undefined) {
             url += `&day=${newDay}`
         }
