@@ -2,12 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-
-const navItems = [
-    { href: '/dashboard', label: 'Overview', icon: '📊' },
-    { href: '/dashboard/habits', label: 'Habits', icon: '🎯' },
-    { href: '/dashboard/tasks', label: 'Tasks', icon: '✅' },
-]
+import { NAV_ITEMS, APP_NAME, APP_YEAR } from '@/lib/constants'
 
 export function Sidebar() {
     const pathname = usePathname()
@@ -36,13 +31,13 @@ export function Sidebar() {
 
             {/* Navigation */}
             <nav className="flex-1 p-4 space-y-2">
-                {navItems.map((item) => (
+                {NAV_ITEMS.map((item) => (
                     <Link
                         key={item.href}
                         href={item.href}
                         className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all ${isActive(item.href)
-                                ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
-                                : 'text-gray-400 hover:bg-white/5 hover:text-white'
+                            ? 'bg-purple-600/20 text-purple-400 border border-purple-500/30'
+                            : 'text-gray-400 hover:bg-white/5 hover:text-white'
                             }`}
                     >
                         <span className="text-xl">{item.icon}</span>
@@ -55,7 +50,7 @@ export function Sidebar() {
             <div className="p-4 border-t border-white/10">
                 <div className="text-center text-xs text-gray-500">
                     <p>Made with ⚡ by Vaibhav</p>
-                    <p className="mt-1">© 2026 Schedule Tracker</p>
+                    <p className="mt-1">© {APP_YEAR} {APP_NAME}</p>
                 </div>
             </div>
         </aside>

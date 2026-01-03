@@ -2,6 +2,8 @@
 
 import { useState, useTransition, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { MONTHS, MONTHS_SHORT } from '@/lib/constants'
+import { getDaysInMonth, getISTDate } from '@/lib/utils'
 
 interface CalendarControlsProps {
     initialYear: number
@@ -9,11 +11,6 @@ interface CalendarControlsProps {
     initialDay?: number
     basePath?: string
 }
-
-const MONTHS = [
-    'January', 'February', 'March', 'April', 'May', 'June',
-    'July', 'August', 'September', 'October', 'November', 'December'
-]
 
 export function CalendarControls({ initialYear, initialMonth, initialDay, basePath = '/dashboard' }: CalendarControlsProps) {
     const router = useRouter()
